@@ -1,5 +1,7 @@
 # Donation API Wrapper
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/ShadiestGoat/donation-api-wrapper.svg)](https://pkg.go.dev/github.com/ShadiestGoat/github.com/ShadiestGoat/donation-api-wrapper)
+
 ## How to use
 
 1. Setup a authed app in the auths.json file on the server
