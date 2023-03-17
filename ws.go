@@ -86,7 +86,7 @@ func (c *Client) OpenWS() error {
 	if c.wsConn != nil {
 		return ErrAlrConnected
 	}
-	conn, resp, err := websocket.DefaultDialer.Dial("wss://" + c.location + "/ws", http.Header{
+	conn, resp, err := websocket.DefaultDialer.Dial("wss://"+c.location+"/ws", http.Header{
 		"Authorization": []string{c.token},
 	})
 	if err != nil {
@@ -119,17 +119,17 @@ func (c *Client) CloseWS() {
 	if c.wsConn != nil {
 		c.wsConn.WriteControl(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseGoingAway, ""), time.Time{})
 		c.wsConn.Close()
-		c.wsConn = nil		
+		c.wsConn = nil
 	}
 }
 
 func (c *Client) wsLoop() {
 	var err error
 
-	defer func ()  {
+	defer func() {
 		// calling this just in case
 		c.CloseWS()
-		
+
 		c.sendEvent(&EventClose{
 			Err: err,
 		})
@@ -155,7 +155,7 @@ func (c *Client) wsLoop() {
 		case et_NEW_DON:
 			d := &Donation{}
 			err = json.Unmarshal(e.Body, &d)
-			
+
 			if err != nil {
 				return
 			}
