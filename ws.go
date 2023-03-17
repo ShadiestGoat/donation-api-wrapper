@@ -98,7 +98,7 @@ func (c *Client) OpenWS() error {
 	if c.wsConn != nil {
 		return ErrAlrConnected
 	}
-	conn, resp, err := websocket.DefaultDialer.Dial("wss://"+c.location+"/ws", http.Header{
+	conn, resp, err := websocket.DefaultDialer.Dial("wss://"+c.location+"/api/ws", http.Header{
 		"Authorization": []string{c.token},
 	})
 	if err != nil {

@@ -34,6 +34,7 @@ func WithCustomHTTPClient(httpClient *http.Client) clientOpt {
 // A client opt that will make the client use a different location. This should be a hostname without any protocols.
 // If you are running the API under a non-root path, you should also specify that here.
 // Do not include a trailing slash.
+// This assumes that the api is under location/api, and the frontend is under location/.
 func WithCustomLocation(loc string) clientOpt {
 	return func(c *Client) {
 		c.location = loc
@@ -44,7 +45,7 @@ func NewClient(token string, opts ...clientOpt) *Client {
 	c := &Client{
 		httpClient: http.DefaultClient,
 		wsConn:     nil,
-		location:   "donate.shadygoat.eu/api",
+		location:   "donate.shadygoat.eu",
 		token:      token,
 		handlers:   map[eventType]any{},
 	}
@@ -74,7 +75,7 @@ func (err HTTPError) Error() string {
 // body is a pointer representing the body to be sent. This should be set to nil if there is no body.
 // resp is a pointer to what will be used as the response body. This should be set to nil if the response body can be disregarded.
 func (c *Client) fetch(m string, path string, body any, resp any) error {
-	uri := "https://" + c.location + path
+	uri := "https://" + c.location + "/api" + path
 
 	var bodyToSend io.Reader
 

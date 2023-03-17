@@ -22,6 +22,23 @@ type Fund struct {
 	Amount *float64 `json:"amount,omitempty"`
 }
 
+// utility method that return the URL of a fund (having the alias take priority!)
+func (c *Client) FundURL(f *Fund) string {
+	if f == nil {
+		return ""
+	}
+
+	returningURL := "https://" + c.location
+
+	if f.Alias != "" {
+		returningURL += "/f/" + f.Alias
+	} else {
+		returningURL += "/funds/" + f.ID
+	}
+
+	return returningURL
+}
+
 // Fetch funds, with query options.
 // before, after are options for pagination
 // if fetchAmounts, then it will fetch the amount donated for this fund
