@@ -1,6 +1,6 @@
 # Donation API Wrapper
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/ShadiestGoat/donation-api-wrapper.svg)](https://pkg.go.dev/github.com/ShadiestGoat/github.com/ShadiestGoat/donation-api-wrapper)
+[![Go Reference](https://pkg.go.dev/badge/github.com/ShadiestGoat/donation-api-wrapper.svg)](https://pkg.go.dev/github.com/ShadiestGoat/donation-api-wrapper)
 
 ## How to use
 
