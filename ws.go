@@ -16,7 +16,10 @@ const (
 	et_NEW_DON
 	et_NEW_FUND
 	et_PING
+
+	// local handlers only!
 	et_CLOSE
+	et_OPEN
 )
 
 type wsEvent struct {
@@ -34,10 +37,13 @@ type EventNewDonation struct {
 	*Donation
 }
 
-// An empty event for whenever the WS closes for any reason
+// An event for whenever the WS connection closes
 type EventClose struct {
 	Err error
 }
+
+// An empty event for whenever the WS connection opens
+type EventOpen struct {}
 
 // Add a handler for WS events, where h is func(c *Client, h *Event{event name})
 // Events supported are currently EventNewFund, and EventNewDonation, EventClose
@@ -51,7 +57,9 @@ func (c *Client) AddHandler(h any) {
 	case func(c *Client, v *EventNewDonation):
 		c.handlers[et_NEW_DON] = h
 	case func(c *Client, v *EventClose):
-		c.handlers[et_NEW_DON] = h
+		c.handlers[et_CLOSE] = h
+	case func(c *Client, v *EventOpen):
+		c.handlers[et_OPEN] = h
 	}
 }
 
@@ -65,6 +73,8 @@ func (c *Client) sendEvent(payload any) {
 		ev = et_NEW_DON
 	case *EventClose:
 		ev = et_CLOSE
+	case *EventOpen:
+		ev = et_CLOSE
 	}
 
 	if h, ok := c.handlers[ev]; ok {
@@ -75,6 +85,8 @@ func (c *Client) sendEvent(payload any) {
 			go h(c, payload.(*EventNewDonation))
 		case func(c *Client, v *EventClose):
 			go h(c, payload.(*EventClose))
+		case func(c *Client, v *EventOpen):
+			go h(c, payload.(*EventOpen))
 		}
 	}
 }
@@ -108,6 +120,8 @@ func (c *Client) OpenWS() error {
 	c.wsConn = conn
 
 	go c.wsLoop()
+
+	c.sendEvent(&EventOpen{})
 
 	return nil
 }
