@@ -1,4 +1,4 @@
-module github.com/ShadiestGoat/donation-api-wrapper
+module github.com/shadiestgoat/donation-api-wrapper
 
 go 1.20
 
