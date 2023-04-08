@@ -74,7 +74,7 @@ func (c *Client) sendEvent(payload any) {
 	case *EventClose:
 		ev = et_CLOSE
 	case *EventOpen:
-		ev = et_CLOSE
+		ev = et_OPEN
 	}
 
 	if h, ok := c.handlers[ev]; ok {
