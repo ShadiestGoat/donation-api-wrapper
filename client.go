@@ -129,3 +129,20 @@ func (c *Client) fetch(m string, path string, body any, resp any) error {
 
 	return nil
 }
+
+type tokenResp struct {
+	Token string `json:"token"`
+}
+
+// Fetch the discord token that is used by the donation website
+func (c *Client) DiscordToken() (string, error) {
+	resp := &tokenResp{}
+	
+	err := c.fetch(http.MethodGet, "/discordToken", nil, &resp)
+
+	if err != nil {
+		return "", err
+	}
+
+	return resp.Token, err
+}
